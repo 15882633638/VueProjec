@@ -1,0 +1,31 @@
+<script>
+let temp = null;
+let obj = {
+
+};
+Object.defineProperty(obj,'name',{
+    //上面的属性是单独存在的，数据描述符
+    // value:'123',
+    // writable:true,//默认值不可以发生改变
+    // 下面的属性是单独存在的，存取描述符
+    enumerable:true,//是否能够出现在obj.keys[]中遍历 fasle
+    configurable:true,//默认不可以被删除,也不可以被重新定义 false
+    get:function(){
+        return temp
+    },
+    set:function(newVlaue){
+        console.log(newVlaue)
+        temp = newVlaue
+    }
+})
+console.log(obj.name)
+obj.name = '2345'
+temp = 578;
+console.log(obj.name)
+console.log(Object.keys(obj))
+
+
+
+
+
+</script>

@@ -1,0 +1,63 @@
+<script>
+//发布
+class Dep{
+    constructor(name){
+        //订阅名称
+        this.name = name;
+        //观察者数组
+        this.subs = [];
+    }
+    //添加观察者
+    addSubs(watcher){
+        console.log(watcher);
+        this.subs.push(watcher);
+    }
+    //发布的信息更新
+    notify(resouce){
+        this.subs.forEach(watcher=>{
+            watcher.upDate(this.name,resouce);
+        })
+    }
+
+}
+class Watcher{
+    constructor(name){
+        //观察者的名字
+        this.name =name;
+    }
+    upDate(sourceName,source){
+        console.log(`收到来自${sourceName}的信息更新了,信息是${source}`);
+    }
+}
+
+
+let Dep1 = new Dep('新华日报');
+let Dep2 = new Dep('腾讯日报');
+let Watcher1 = new Watcher('中慧科技');
+let Watcher2 = new Watcher('华清远见');
+Dep1.addSubs(Watcher1);
+Dep2.addSubs(Watcher2);
+//控制信息更新变量
+let information1 = null
+let obj1 = {
+   
+}
+Object.defineProperty(obj1,'information',{
+    configurable:true,
+    enumerable:true,
+    set(newVlaue){
+        console.log(`information被重新定义为${newVlaue}`);
+        Dep1.notify(newVlaue);
+        Dep2.notify(newVlaue);
+       return information1 = newVlaue
+    },
+    get(){
+        return information1
+    }
+})
+obj1.information = '变量更新1';
+obj1.information = '变量更新2';
+console.log(obj1.information)
+
+
+</script>

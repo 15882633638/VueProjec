@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="box" class="box" @click='getadd()'>{{foo}}</div>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+    //定义插件
+    const Myplugins = {
+        install(Vue) {
+            Vue.mixin({
+                created() {
+                    // rules是定义在Vue实例当中的对象
+                    if (this.$options.rules) {
+                        //we can do something
+                        console.log(123)
+                    }
+                }
+            })
+        },
+        add(){
+            console.log(2344)
+        }
+    }
+    // 调用插件
+    Vue.use(Myplugins)
+    let vm = new Vue({
+        el:'#box',
+        data: {
+            foo: 10
+        },
+        methods: {
+            getadd:function(){
+                Myplugins.add()
+            }
+        },
+        rules: {
+            foo: {
+                validata: value => value > 1,
+                message: 'foo must be greater than one'
+            }
+        }
+    })
+
+</script>
