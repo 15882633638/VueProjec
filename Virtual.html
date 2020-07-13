@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>虚拟DOM操作</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id='app'>
+        <smart-avatar username='vue.js'></smart-avatar>
+    </div>
+    
+    <script>
+        // 虚拟DOM形成是通过render函数
+        // 生成真实的DOM是通过Vue.compenents函数实现
+        //高阶组件
+        
+        function FetchUrl(username,cb){
+            setTimeout(_=>{
+                console.log(1)
+                cb('https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=994245919,998868084&fm=26&gp=0.jpg')
+            },500)
+        }
+        const Avatar = {
+            props:['src'],
+            template:`<img :src="src">`
+        }
+        function withAvatarURL(innerComponent){
+            return {
+                props:['username'],
+                data(){
+                    return {
+                        url:'http://img1.imgtn.bdimg.com/it/u=2380477824,3575207333&fm=26&gp=0.jpg'
+                    }
+                },
+                created () {
+                    FetchUrl(this.username,url=>{
+                        this.url = url
+                        }
+                    )
+                },
+                render(h) {
+                    return h(innerComponent,{
+                       props:{
+                           src:this.url
+                       }
+                    })
+                },
+            }
+        }
+        const smartAvatar = withAvatarURL(Avatar)
+        new Vue({
+            el:'#app',
+            components:{smartAvatar}
+        })
+    </script>
+</body>
+</html>
